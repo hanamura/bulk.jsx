@@ -5,6 +5,7 @@
 			srcDir: null,
 			dstDir: null,
 			mask: '*',
+			pattern: null,
 			tasks: [],
 			savers: []
 		}, options);
@@ -19,6 +20,10 @@
 			// proceed
 			var index = 0;
 			_.each(srcDir.getFiles(this.options.mask), function(srcFile) {
+				// pattern
+				if (this.options.pattern && !this.options.pattern.test(srcFile.name)) {
+					return;
+				}
 				// doc
 				var doc = open(srcFile);
 				// tasks
