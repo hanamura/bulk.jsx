@@ -12,6 +12,6 @@
 	};
 	// pixels
 	this.bulk.pixels = pixels = function(fn, context) {
-		units(Units.POINTS, fn, context);
+		units(Units.PIXELS, fn, context);
 	};
 }).call(this);
