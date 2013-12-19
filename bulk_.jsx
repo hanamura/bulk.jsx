@@ -1327,7 +1327,7 @@
 				this,
 				{
 					mask: this.options.mask,
-					depth: depth: this.options.deep ? Number.MAX_VALUE : 0
+					depth: this.options.deep ? Number.MAX_VALUE : 0
 				}
 			);
 		}
