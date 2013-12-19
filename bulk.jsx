@@ -1,0 +1,181 @@
+(function() {
+	// constructor
+	var Bulk = function(options) {
+		this.options = _.extend({
+			srcDir: null,
+			dstDir: null,
+			mask: '*',
+			tasks: [],
+			savers: []
+		}, options);
+	};
+	// methods
+	Bulk.prototype = {
+		go: function() {
+			// dir
+			var srcDir = this.options.srcDir || Folder.selectDialog('input');
+			var dstDir = this.options.dstDir || Folder.selectDialog('output');
+			if (!srcDir || !dstDir) { return; }
+			// proceed
+			var index = 0;
+			_.each(srcDir.getFiles(this.options.mask), function(srcFile) {
+				// doc
+				var doc = open(srcFile);
+				// tasks
+				_.each(this.options.tasks, function(task) {
+					task.proceed({doc: doc});
+				});
+				// savers
+				_.each(this.options.savers, function(saver) {
+					saver.save({
+						doc: doc,
+						srcDir: srcDir,
+						dstDir: dstDir,
+						srcFile: srcFile,
+						index: index++
+					});
+				});
+				// close
+				doc.close(SaveOptions.DONOTSAVECHANGES);
+			}, this);
+		}
+	};
+	this.bulk || this.bulk = {};
+	this.bulk.Bulk = Bulk;
+}).call(this);
+
+(function() {
+	// constructor
+	var Export = function(options) {
+		this.options = _.extend({
+			option: null,
+			exportType: ExportType.SAVEFORWEB,
+			template: '<%= basename %>.<%= extension %>'
+		}, options);
+	};
+	// methods
+	Export.prototype = {
+		save: function(options) {
+			// defaults
+			var index = options.srcFile.name.lastIndexOf('.');
+			var defaults = {};
+			if (index < 0) {
+				defaults['basename'] = options.srcFile.name;
+				defaults['extension'] = '';
+			} else {
+				defaults['basename'] = options.srcFile.name.substring(0, index);
+				defaults['extension'] = options.srcFile.name.substring(index + 1);
+			}
+			// filename
+			var filename = _.template(this.options.template, _.extend(defaults, options));
+			// file
+			var file = new File(options.dstDir.absoluteURI + '/' + filename);
+			// export
+			options.doc.exportDocument(file, this.options.exportType, this.options.option);
+		},
+	};
+	this.bulk || this.bulk = {};
+	this.bulk.Export = Export;
+}).call(this);
+
+(function() {
+	var Options = {};
+	// jpg
+	Options.jpg = function(options) {
+		options = _.extend({
+			quality: 100
+		}, options);
+		var xo = new ExportOptionsSaveForWeb();
+		xo.format = SaveDocumentType.JPEG;
+		xo.quality = options.quality;
+		return xo;
+	};
+	// png
+	Options.png = function() {
+		var xo = new ExportOptionsSaveForWeb();
+		xo.format = SaveDocumentType.PNG;
+		xo.PNG8 = false;
+		xo.quality = 100;
+		return xo;
+	};
+	this.bulk || this.bulk = {};
+	this.bulk.Options = Options;
+}).call(this);
+
+(function() {
+	// constructor
+	var Resize = function(options) {
+		this.options = _.extend({
+			width: 0,
+			height: 0,
+			resolution: 72,
+			resampleMethod: ResampleMethod.BICUBICSHARPER,
+			resizeMethod: 'showall',
+			reduceOnly: true,
+		}, options);
+	};
+	// constants
+	Resize.SHOWALL = 'showall';
+	Resize.NOBORDER = 'noborder';
+	Resize.EXACTFIT = 'exactfit';
+	// methods
+	Resize.prototype = {
+		// proceed
+		proceed: function(options) {
+			var size = this.size(options.doc.width, options.doc.height);
+			options.doc.resizeImage(
+				size.width,
+				size.height,
+				this.options.resolution,
+				this.options.resampleMethod
+			);
+		},
+		// size
+		size: function(docWidth, docHeight) {
+			var areaWidth = this.options.width;
+			var areaHeight = this.options.height;
+			var ratioDoc = docWidth / docHeight;
+			var ratioArea = areaWidth / areaHeight;
+			var w;
+			var h;
+			if (
+				this.options.reduceOnly &&
+				docWidth <= areaWidth &&
+				docHeight <= areaHeight
+			) {
+				w = docWidth;
+				h = docHeight;
+			} else if (this.options.resizeMethod === Resize.EXACTFIT) {
+				w = areaWidth;
+				h = areaHeight;
+			} else if (this.options.resizeMethod === Resize.SHOWALL) {
+				if (ratioArea > ratioDoc) {
+					w = docWidth * (areaHeight / docHeight);
+					h = areaHeight;
+				} else if (ratioArea < ratioDoc) {
+					w = areaWidth;
+					h = docHeight * (areaWidth / docWidth);
+				} else {
+					w = areaWidth;
+					h = areaHeight;
+				}
+			} else if (this.options.resizeMethod === Resize.NOBORDER) {
+				if (ratioArea > ratioDoc) {
+					w = areaWidth;
+					h = docHeight * (areaWidth / docWidth);
+				} else if (ratioArea < ratioDoc) {
+					w = docWidth * (areaHeight / docHeight);
+					h = areaHeight;
+				} else {
+					w = areaWidth;
+					h = areaHeight;
+				}
+			} else {
+				throw new Error('unknown resize method');
+			}
+			return {width: w, height: h};
+		}
+	};
+	this.bulk || this.bulk = {};
+	this.bulk.Resize = Resize;
+}).call(this);

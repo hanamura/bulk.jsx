@@ -1,0 +1,15 @@
+{
+  "name": "bulk.jsx",
+  "version": "0.1.0",
+  "description": "",
+  "author": "Taro Hanamura",
+  "license": "MIT",
+  "dependencies": {
+    "underscore": "~1.5.2"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-watch": "~0.5.3"
+  }
+}
