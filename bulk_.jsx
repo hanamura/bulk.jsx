@@ -1283,6 +1283,7 @@
 			dstDir: null,
 			mask: '*',
 			pattern: null,
+			deep: true,
 			tasks: [],
 			savers: []
 		}, options);
@@ -1296,30 +1297,39 @@
 			if (!srcDir || !dstDir) { return; }
 			// proceed
 			var index = 0;
-			_.each(srcDir.getFiles(this.options.mask), function(srcFile) {
-				// pattern
-				if (this.options.pattern && !this.options.pattern.test(srcFile.name)) {
-					return;
-				}
-				// doc
-				var doc = open(srcFile);
-				// tasks
-				_.each(this.options.tasks, function(task) {
-					task.proceed({doc: doc});
-				});
-				// savers
-				_.each(this.options.savers, function(saver) {
-					saver.save({
-						doc: doc,
-						srcDir: srcDir,
-						dstDir: dstDir,
-						srcFile: srcFile,
-						index: index++
+			// walk
+			bulk.walk(
+				srcDir.getFiles(this.options.mask),
+				function(srcFile) {
+					// pattern
+					if (this.options.pattern && !this.options.pattern.test(srcFile.name)) {
+						return;
+					}
+					// doc
+					var doc = open(srcFile);
+					// tasks
+					_.each(this.options.tasks, function(task) {
+						task.proceed({doc: doc});
 					});
-				});
-				// close
-				doc.close(SaveOptions.DONOTSAVECHANGES);
-			}, this);
+					// savers
+					_.each(this.options.savers, function(saver) {
+						saver.save({
+							doc: doc,
+							srcDir: srcDir,
+							dstDir: dstDir,
+							srcFile: srcFile,
+							index: index++
+						});
+					});
+					// close
+					doc.close(SaveOptions.DONOTSAVECHANGES);
+				},
+				this,
+				{
+					mask: this.options.mask,
+					depth: depth: this.options.deep ? Number.MAX_VALUE : 0
+				}
+			);
 		}
 	};
 	this.bulk || this.bulk = {};
@@ -1483,7 +1493,7 @@
 	// bulk
 	this.bulk || this.bulk = {};
 	// vars
-	var units, pixels, pad;
+	var units, pixels, pad, walk;
 	// units
 	this.bulk.units = units = function(units, fn, context) {
 		var units_ = preferences.rulerUnits;
@@ -1507,4 +1517,26 @@
 		}
 		return str;
 	};
+	// walk
+	this.bulk.walk = walk = function(files, fn, context, options) {
+		options = _.extend({
+			mask: '*',
+			depth: Number.MAX_VALUE
+		}, options);
+		if (options.depth < 0) {
+			return;
+		}
+		_.each(files, function(file) {
+			if (file instanceof Folder) {
+				walk(
+					file.getFiles(options.mask),
+					fn,
+					context,
+					{mask: options.mask, depth: options.depth - 1}
+				);
+			} else {
+				fn.call(context, file);
+			}
+		});
+	}
 }).call(this);
