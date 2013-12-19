@@ -29,7 +29,11 @@
 						return;
 					}
 					// doc
-					var doc = open(srcFile);
+					try {
+						var doc = open(srcFile);
+					} catch (e) {
+						return;
+					}
 					// tasks
 					_.each(this.options.tasks, function(task) {
 						task.proceed({doc: doc});
