@@ -15,7 +15,7 @@ ExtendScript utilities for Photoshop.
 		savers: [
 			new bulk.Export({
 				option: bulk.Options.jpg({quality: 80}),
-				template: 'image-<%= index %>.<%= extension %>'
+				template: 'image-<%= index %>.jpg'
 			})
 		]
 	});
