@@ -4,24 +4,14 @@
 		this.options = _.extend({
 			option: null,
 			exportType: ExportType.SAVEFORWEB,
-			template: '<%= basename %>.<%= extension %>'
+			template: '<%= filename %>'
 		}, options);
 	};
 	// methods
 	Export.prototype = {
 		save: function(options) {
-			// defaults
-			var index = options.srcFile.name.lastIndexOf('.');
-			var defaults = {};
-			if (index < 0) {
-				defaults['basename'] = options.srcFile.name;
-				defaults['extension'] = '';
-			} else {
-				defaults['basename'] = options.srcFile.name.substring(0, index);
-				defaults['extension'] = options.srcFile.name.substring(index + 1);
-			}
 			// filename
-			var filename = _.template(this.options.template, _.extend(defaults, options));
+			var filename = _.template(this.options.template, options);
 			// file
 			var file = new File(options.dstDir.absoluteURI + '/' + filename);
 			// export

@@ -39,13 +39,18 @@
 						task.proceed({doc: doc});
 					});
 					// savers
+					var basename = bulk.basename(srcFile.name);
+					var extension = bulk.extension(srcFile.name);
 					_.each(this.options.savers, function(saver) {
 						saver.save({
 							doc: doc,
 							srcDir: srcDir,
 							dstDir: dstDir,
 							srcFile: srcFile,
-							index: index++
+							index: index++,
+							filename: srcFile.name,
+							basename: basename,
+							extension: extension
 						});
 					});
 					// close
@@ -69,24 +74,14 @@
 		this.options = _.extend({
 			option: null,
 			exportType: ExportType.SAVEFORWEB,
-			template: '<%= basename %>.<%= extension %>'
+			template: '<%= filename %>'
 		}, options);
 	};
 	// methods
 	Export.prototype = {
 		save: function(options) {
-			// defaults
-			var index = options.srcFile.name.lastIndexOf('.');
-			var defaults = {};
-			if (index < 0) {
-				defaults['basename'] = options.srcFile.name;
-				defaults['extension'] = '';
-			} else {
-				defaults['basename'] = options.srcFile.name.substring(0, index);
-				defaults['extension'] = options.srcFile.name.substring(index + 1);
-			}
 			// filename
-			var filename = _.template(this.options.template, _.extend(defaults, options));
+			var filename = _.template(this.options.template, options);
 			// file
 			var file = new File(options.dstDir.absoluteURI + '/' + filename);
 			// export
@@ -95,6 +90,24 @@
 	};
 	this.bulk || this.bulk = {};
 	this.bulk.Export = Export;
+}).call(this);
+
+(function() {
+	// constructor
+	var Log = function(options) {
+		this.options = _.extend({
+			template: '<%= filename %>'
+		}, options);
+	};
+	// methods
+	Log.prototype = {
+		save: function(options) {
+			var message = _.template(this.options.template, options);
+			$.writeln(message);
+		}
+	};
+	this.bulk || this.bulk = {};
+	this.bulk.Log = Log;
 }).call(this);
 
 (function() {
@@ -241,7 +254,7 @@
 	// bulk
 	this.bulk || this.bulk = {};
 	// vars
-	var units, pixels, pad, walk;
+	var units, pixels, pad, walk, basename, extension;
 	// units
 	this.bulk.units = units = function(units, fn, context) {
 		var units_ = preferences.rulerUnits;
@@ -287,4 +300,14 @@
 			}
 		});
 	}
+	// basename
+	this.bulk.basename = basename = function(filename) {
+		var i = filename.lastIndexOf('.');
+		return i < 0 ? filename : filename.substring(0, i);
+	};
+	// extension
+	this.bulk.extension = extension = function(filename) {
+		var i = filename.lastIndexOf('.');
+		return i < 0 ? '' : filename.substring(i + 1);
+	};
 }).call(this);

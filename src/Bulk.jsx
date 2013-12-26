@@ -39,13 +39,18 @@
 						task.proceed({doc: doc});
 					});
 					// savers
+					var basename = bulk.basename(srcFile.name);
+					var extension = bulk.extension(srcFile.name);
 					_.each(this.options.savers, function(saver) {
 						saver.save({
 							doc: doc,
 							srcDir: srcDir,
 							dstDir: dstDir,
 							srcFile: srcFile,
-							index: index++
+							index: index++,
+							filename: srcFile.name,
+							basename: basename,
+							extension: extension
 						});
 					});
 					// close

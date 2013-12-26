@@ -2,7 +2,7 @@
 	// bulk
 	this.bulk || this.bulk = {};
 	// vars
-	var units, pixels, pad, walk;
+	var units, pixels, pad, walk, basename, extension;
 	// units
 	this.bulk.units = units = function(units, fn, context) {
 		var units_ = preferences.rulerUnits;
@@ -48,4 +48,14 @@
 			}
 		});
 	}
+	// basename
+	this.bulk.basename = basename = function(filename) {
+		var i = filename.lastIndexOf('.');
+		return i < 0 ? filename : filename.substring(0, i);
+	};
+	// extension
+	this.bulk.extension = extension = function(filename) {
+		var i = filename.lastIndexOf('.');
+		return i < 0 ? '' : filename.substring(i + 1);
+	};
 }).call(this);
