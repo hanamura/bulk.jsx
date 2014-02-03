@@ -32,7 +32,7 @@ bulk(Folder.selectDialog('Select source folder.'), {filePattern: /\.(jpg|jpeg|pn
 
 1. [Download bulk.jsx](https://github.com/hanamura/bulk.jsx/archive/master.zip) and Unzip.
 2. Go to the unzipped folder **bulk.jsx-master/templates** and edit **template.jsx** (there are already some codes).
-3. Launch Photoshop and select menu: **File** > **Scripts** > **Brwse…** then open **template.jsx**.
+3. Launch Photoshop and select menu: **File** > **Scripts** > **Browse…** then open **template.jsx**.
 4. Script runs.
 
 ### npm
