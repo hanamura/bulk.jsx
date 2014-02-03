@@ -4,7 +4,7 @@ ExtendScript (.jsx) library for Photoshop.
 
 ## Example
 
-```
+```javascript
 #include "bulk.full.jsx"
 
 bulk(Folder.selectDialog('Select source folder.'), {filePattern: /\.(jpg|jpeg|png|gif|tif|tiff|psd)$/i})
@@ -45,7 +45,7 @@ npm install bulk.jsx
 
 Script:
 
-```
+```javascript
 #include "node_modules/bulk.jsx/bulk.full.jsx"
 
 // your code here
@@ -61,7 +61,7 @@ bower install bulk.jsx
 
 Script:
 
-```
+```javascript
 #include "bower_components/bulk.jsx/bulk.full.jsx"
 
 // your code here
@@ -96,7 +96,7 @@ Script:
 
 **Returns**: *bulk Object*
 
-```
+```javascript
 bulk(Folder.selectDialog('Select folder.'), {filePattern: /\.jpg$/})
 	.resize({type: 'fit', width: 1000, height: 1000})
 	.save()
@@ -109,7 +109,7 @@ bulk(Folder.selectDialog('Select folder.'), {filePattern: /\.jpg$/})
 
 **Returns**: *String*
 
-```
+```javascript
 bulk.basename('hello.jpg');
 // => 'hello'
 ```
@@ -120,7 +120,7 @@ bulk.basename('hello.jpg');
 
 **Returns**: *String*
 
-```
+```javascript
 bulk.extension('hello.jpg');
 // => 'jpg'
 ```
@@ -138,7 +138,7 @@ bulk.extension('hello.jpg');
 
 **Returns**: *String*
 
-```
+```javascript
 bulk.pad('5', 3);
 // => '005'
 ```
@@ -162,7 +162,7 @@ Set `preference.rulerUnits` to specified units, execute callback and reset to or
 
 **Returns**: *undefined*
 
-```
+```javascript
 bulk.units(Units.INCHES, function() {
 	$.writeln('document width: ' + String(app.activeDocument.width) + ' inches');
 	$.writeln('document height: ' + String(app.activeDocument.height) + ' inches');
@@ -191,7 +191,7 @@ Traverse through files in source, yield each file/other object to callback.
 
 **Returns**: *undefined*
 
-```
+```javascript
 bulk.walk(Folder.selectDialog('Select folder.'), function(file) {
 	$.writeln(file.name); // log filename
 }, null, {
@@ -211,7 +211,7 @@ Task: crop document.
 
 **Returns**: *bulk Object*
 
-```
+```javascript
 bulk(src, options)
 	.crop({
 		width: 100,
@@ -258,7 +258,7 @@ Task: export document.
 
 **Returns**: *bulk Object*
 
-```
+```javascript
 var exportOptions = new ExportOptionsSaveForWeb();
 exportOptions.format = SaveDocumentType.JPEG;
 exportOptions.quality = 50;
@@ -302,7 +302,7 @@ Task: output document/file information to JavaScript console of ExtendScript Too
 
 **Returns**: *bulk Object*
 
-```
+```javascript
 bulk(src, options)
 	.log({
 		template: '<%= bulk.pad(index + 1, 3) %>: <%= filename %>',
@@ -329,7 +329,7 @@ Task: change color mode of document.
 
 **Returns**: *bulk Object*
 
-```
+```javascript
 bulk(src, options)
 	.mode({
 		mode: ChangeMode.CMYK
@@ -365,7 +365,7 @@ Pass bulk object to all callbacks as `this`. You can use this method to fork tas
 
 **Returns**: *bulk Object*
 
-```
+```javascript
 bulk(src, options)
 	.resize({
 		type: 'fit',
@@ -446,7 +446,7 @@ Taks: resize document.
 
 **Returns** *bulk Object*
 
-```
+```javascript
 bulk(src, options)
 	.resize({
 		type: 'fit',
@@ -467,7 +467,7 @@ Task: save document.
 
 **Returns**: *bulk Object*
 
-```
+```javascript
 bulk(src, options)
 	.mode({
 		mode: ChangeMode.RGB
@@ -517,7 +517,7 @@ Document and File information class. Its instances are passed to task functions 
 
 To create task `logSize` for example:
 
-```
+```javascript
 bulk.fn.logSize = function(options) {
 	// options
 	var filename = !!options.filename;
@@ -541,7 +541,7 @@ bulk.fn.logSize = function(options) {
 
 To use:
 
-```
+```javascript
 bulk(src, options)
 	.logSize({
 		filename: true,
