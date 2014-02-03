@@ -1,0 +1,26 @@
+{
+  "name": "bulk.jsx",
+  "version": "2.0.0",
+  "authors": [
+    "Taro Hanamura <m@hanamurataro.com>"
+  ],
+  "description": "ExtendScript (.jsx) library for Photoshop.",
+  "main": "bulk.jsx",
+  "keywords": [
+    "extendscript",
+    "jsx",
+    "photoshop"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "underscore": "~1.5.2",
+    "rebounds": "~0.1.0"
+  }
+}
