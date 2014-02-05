@@ -1,3 +1,4 @@
+#target "photoshop"
 #include "../bulk.full.jsx"
 
 // edit and customize below

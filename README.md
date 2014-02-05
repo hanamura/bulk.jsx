@@ -5,6 +5,7 @@ ExtendScript (.jsx) library for Photoshop.
 ## Example
 
 ```javascript
+#target "photoshop"
 #include "bulk.full.jsx"
 
 bulk(Folder.selectDialog('Select source folder.'), {filePattern: /\.(jpg|jpeg|png|gif|tif|tiff|psd)$/i})
@@ -46,6 +47,7 @@ npm install bulk.jsx
 Script:
 
 ```javascript
+#target "photoshop"
 #include "node_modules/bulk.jsx/bulk.full.jsx"
 
 // your code here
@@ -62,6 +64,7 @@ bower install bulk.jsx
 Script:
 
 ```javascript
+#target "photoshop"
 #include "bower_components/bulk.jsx/bulk.full.jsx"
 
 // your code here
