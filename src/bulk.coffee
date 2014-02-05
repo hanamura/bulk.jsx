@@ -65,7 +65,7 @@ _bulk = @bulk
 					when s instanceof app.Document
 						new bulk.DocInfo
 							doc: s
-							file: null
+							file: try s.fullName catch e then null
 							index: index++
 				if info
 					for task in @_tasks

@@ -102,7 +102,14 @@
                 case !(s instanceof app.Document):
                   return new bulk.DocInfo({
                     doc: s,
-                    file: null,
+                    file: (function() {
+                      try {
+                        return s.fullName;
+                      } catch (_error) {
+                        e = _error;
+                        return null;
+                      }
+                    })(),
                     index: index++
                   });
               }
