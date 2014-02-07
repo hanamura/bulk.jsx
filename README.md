@@ -202,6 +202,12 @@ bulk.walk(Folder.selectDialog('Select folder.'), function(file) {
 });
 ```
 
+### .data
+
+Property for shared data.
+
+**Type**: *Object*
+
 ### .crop(options = null)
 
 Task: crop document.
@@ -503,18 +509,22 @@ Document and File information class. Its instances are passed to task functions 
 
 **Properties**:
 
-- **doc** *Document*  
-	Target Document object.
-- **file** *File*  
-	File object of the target Document.
-- **index** *Integer*  
-	Current index in sources.
-- **filename** *String*  
-	Filename of the File.
 - **basename** *String*  
 	Basename of the File. (example: `'hello'` if filename is `'hello.jpg'`)
+- **bulk** *bulk*  
+	Bulk Object currently processing this DocInfo.
+- **data** *Object*  
+	Shared data.
+- **doc** *Document*  
+	Target Document object.
 - **extension** *String*  
 	Extension of the File. (example: `'jpg'` if filename is `'hello.jpg'`)
+- **file** *File*  
+	File object of the target Document.
+- **filename** *String*  
+	Filename of the File.
+- **index** *Integer*  
+	Current index in sources.
 
 ## Create Custom Task
 
