@@ -7,22 +7,26 @@
 		exportOptions: null
 	, opts
 
-	@push ->
-		dest = switch
-			when opts.dest instanceof Folder then new Folder opts.dest.absoluteURI
-			when _.isFunction opts.dest then opts.dest @
-			when _.isString opts.dest
-				folder = @file.parent
-				folder.changePath _.template opts.dest, @
+	_dest = (info, dest) ->
+		switch
+			when dest instanceof Folder then new Folder dest.absoluteURI
+			when _.isFunction dest then _dest info, dest.call info
+			when _.isString dest
+				folder = info.file.parent
+				folder.changePath _.template dest, info
 				folder
-			else @file.parent
+			else info.file.parent
 
-		filename = switch
-			when _.isString opts.filename then _.template opts.filename, @
-			when _.isFunction opts.filename then opts.filename @
-			else @file.name
+	_name = (info, name) ->
+		switch
+			when _.isFunction name then _name info, name.call info
+			when _.isString name then _.template name, info
+			else info.file.name
 
-		file = new File "#{dest.absoluteURI}/#{filename}"
+	@push ->
+		dest = _dest @, opts.dest
+		name = _name @, opts.filename
+		file = new File "#{dest.absoluteURI}/#{name}"
 
 		if file.exists and opts.overwrite isnt true and opts.overwrite isnt 'ask'
 			return

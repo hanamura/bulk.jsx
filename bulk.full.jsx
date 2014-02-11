@@ -1702,6 +1702,7 @@
 
 (function() {
   this.bulk.fn["export"] = function(opts) {
+    var _dest, _name;
     if (opts == null) {
       opts = null;
     }
@@ -1712,33 +1713,36 @@
       exportType: null,
       exportOptions: null
     }, opts);
+    _dest = function(info, dest) {
+      var folder;
+      switch (false) {
+        case !(dest instanceof Folder):
+          return new Folder(dest.absoluteURI);
+        case !_.isFunction(dest):
+          return _dest(info, dest.call(info));
+        case !_.isString(dest):
+          folder = info.file.parent;
+          folder.changePath(_.template(dest, info));
+          return folder;
+        default:
+          return info.file.parent;
+      }
+    };
+    _name = function(info, name) {
+      switch (false) {
+        case !_.isFunction(name):
+          return _name(info, name.call(info));
+        case !_.isString(name):
+          return _.template(name, info);
+        default:
+          return info.file.name;
+      }
+    };
     return this.push(function() {
-      var dest, file, filename, folder;
-      dest = (function() {
-        switch (false) {
-          case !(opts.dest instanceof Folder):
-            return new Folder(opts.dest.absoluteURI);
-          case !_.isFunction(opts.dest):
-            return opts.dest(this);
-          case !_.isString(opts.dest):
-            folder = this.file.parent;
-            folder.changePath(_.template(opts.dest, this));
-            return folder;
-          default:
-            return this.file.parent;
-        }
-      }).call(this);
-      filename = (function() {
-        switch (false) {
-          case !_.isString(opts.filename):
-            return _.template(opts.filename, this);
-          case !_.isFunction(opts.filename):
-            return opts.filename(this);
-          default:
-            return this.file.name;
-        }
-      }).call(this);
-      file = new File("" + dest.absoluteURI + "/" + filename);
+      var dest, file, name;
+      dest = _dest(this, opts.dest);
+      name = _name(this, opts.filename);
+      file = new File("" + dest.absoluteURI + "/" + name);
       if (file.exists && opts.overwrite !== true && opts.overwrite !== 'ask') {
         return;
       }
