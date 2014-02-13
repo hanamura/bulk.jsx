@@ -250,12 +250,12 @@ Task: export document.
 		Destination folder for output file. Default value: `null`.
 		- **Folder**: Passed folder.
 		- **String**: Passed to underscore’s [`.template`](http://underscorejs.org/#template) function with `bulk.DocInfo` object: `_.template(string, docInfo)`. Then, evaluated as an absolute path, or a relative path to parent folder of the original file.
-		- **Function**: Use return value of `func(docInfo)`.
+		- **Function**: Use return value of `func.call(docInfo)`.
 		- **null**: Same folder with the original file.
 	- **options.filename** *String | Template String | Function*  
 		Filename for output file. Default value: `null`.
 		- **String**: Passed to underscore’s [`.template`](http://underscorejs.org/#template) function with `bulk.DocInfo` object: `_.template(string, docInfo)`.
-		- **Function**: Use return value of `func(docInfo)`.
+		- **Function**: Use return value of `func.call(docInfo)`.
 		- **null**: Same name with the original file.
 	- **options.overwrite** *Boolean | `'ask'`*  
 		Define behavior in case a filename already exists. Default value: `'ask'`.
