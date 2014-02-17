@@ -119,7 +119,10 @@ bulk.walk = (src, f, g, opts = null) ->
 
 	switch
 		when src instanceof Folder
-			if not opts.folderPattern or opts.folderPattern.test src.name
+			if \
+			((_.isFunction opts.folderPattern) and opts.folderPattern src) or
+			((_.isRegExp opts.folderPattern) and opts.folderPattern.test src.name) or
+			not opts.folderPattern
 				if opts.deep
 					bulk.walk \
 						src.getFiles(opts.mask),
@@ -133,8 +136,11 @@ bulk.walk = (src, f, g, opts = null) ->
 						g,
 						opts,
 		when src instanceof File
-			if not opts.filePattern or opts.filePattern.test src.name
-				f and f src
+			if \
+			((_.isFunction opts.filePattern) and opts.filePattern src) or
+			((_.isRegExp opts.filePattern) and opts.filePattern.test src.name) or
+			not opts.filePattern
+				f? src
 		when _.isArray src
 			bulk.walk s, f, g, opts for s in src
 		when _.isString src
@@ -144,7 +150,7 @@ bulk.walk = (src, f, g, opts = null) ->
 				g,
 				opts,
 		else
-			g and g src
+			g? src
 
 	return
 

@@ -88,9 +88,9 @@ Script:
 	- **bulk Object**: Same as `bulk.src()`.
 	- **Function**: Same as `func()`.
 - **options** *Object*
-	- **options.filePattern** *RegExp*  
+	- **options.filePattern** *RegExp | Function*  
 		Filename pattern to specify targets. If `null`, all files are accepted. Default value: `null`
-	- **options.folderPattern** *RegExp*  
+	- **options.folderPattern** *RegExp | Function*  
 		Folder name pattern to specify targets. If `null`, all folders are accepted. Default value: `null`
 	- **options.mask** *String*  
 		Parameter passed to `Folder.getFiles(mask)`. Default value: `'*'`.
@@ -183,9 +183,9 @@ Traverse through files in source, yield each file/other object to callback.
 - **otherCallback** *Function(otherObject)*  
 	Callback for unknown objects.
 - **options** *Object*
-	- **options.filePattern** *RegExp*  
+	- **options.filePattern** *RegExp | Function*  
 		Filename pattern to specify targets. If null, all files are accepted. Default value: `null`
-	- **options.folderPattern** *RegExp*  
+	- **options.folderPattern** *RegExp | Function*  
 		Folder name pattern to specify targets. If null, all folders are accepted. Default value: `null`
 	- **options.mask** *String*  
 		Parameter passed to `Folder.getFiles(mask)`. Default value: `'*'`.

@@ -186,7 +186,7 @@
     }, opts);
     switch (false) {
       case !(src instanceof Folder):
-        if (!opts.folderPattern || opts.folderPattern.test(src.name)) {
+        if (((_.isFunction(opts.folderPattern)) && opts.folderPattern(src)) || ((_.isRegExp(opts.folderPattern)) && opts.folderPattern.test(src.name)) || !opts.folderPattern) {
           if (opts.deep) {
             bulk.walk(src.getFiles(opts.mask), f, g, opts);
           } else {
@@ -206,8 +206,10 @@
         }
         break;
       case !(src instanceof File):
-        if (!opts.filePattern || opts.filePattern.test(src.name)) {
-          f && f(src);
+        if (((_.isFunction(opts.filePattern)) && opts.filePattern(src)) || ((_.isRegExp(opts.filePattern)) && opts.filePattern.test(src.name)) || !opts.filePattern) {
+          if (typeof f === "function") {
+            f(src);
+          }
         }
         break;
       case !_.isArray(src):
@@ -220,7 +222,9 @@
         bulk.walk(File(src), f, g, opts);
         break;
       default:
-        g && g(src);
+        if (typeof g === "function") {
+          g(src);
+        }
     }
   };
 
