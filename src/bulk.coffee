@@ -171,6 +171,7 @@ bulk.pixels = (fn, context = null) ->
   bulk.units Units.PIXELS, fn, context
 
 bulk.pad = (str, len, pad = '0', right = false) ->
+  str = String str
   while str.length < len
     str = if right then str + pad else pad + str
   str

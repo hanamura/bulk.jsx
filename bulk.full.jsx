@@ -1672,6 +1672,7 @@
     if (right == null) {
       right = false;
     }
+    str = String(str);
     while (str.length < len) {
       str = right ? str + pad : pad + str;
     }
