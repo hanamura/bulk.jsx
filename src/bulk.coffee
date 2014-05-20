@@ -28,16 +28,13 @@ _bulk = @bulk
       @_opts = opts
       @_tasks = []
       @_opensDoc = false
-      @data = {}
     else
       return new bulk src, opts
 
   push: (task, opensDoc = true) ->
-    b = new bulk @_src, @_opts
+    new bulk @_src, @_opts
       .tasks @_tasks.concat [task]
       .opensDoc @_opensDoc || opensDoc
-    b.data = _.clone @data
-    b
 
   pass: (fns...) ->
     for fn in fns
@@ -64,14 +61,12 @@ _bulk = @bulk
                 doc: if @_opensDoc then open s else null
                 file: s
                 index: index++
-                bulk: @
             catch e
           when s instanceof app.Document
             new bulk.DocInfo
               doc: s
               file: try s.fullName catch e then null
               index: index++
-              bulk: @
         if info
           for task in @_tasks
             task.call info
@@ -92,11 +87,10 @@ bulk.noConflict = =>
 
 bulk.DocInfo = class DocInfo
   constructor: (opts = null) ->
-    {doc: @doc, file: @file, index: @index, bulk: @bulk} = _.extend
+    {doc: @doc, file: @file, index: @index} = _.extend
       doc: null
       file: null
       index: -1
-      bulk: null
     , opts
 
     @data = {}

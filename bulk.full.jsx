@@ -1447,20 +1447,16 @@
         this._opts = opts;
         this._tasks = [];
         this._opensDoc = false;
-        this.data = {};
       } else {
         return new bulk(src, opts);
       }
     }
 
     bulk.prototype.push = function(task, opensDoc) {
-      var b;
       if (opensDoc == null) {
         opensDoc = true;
       }
-      b = new bulk(this._src, this._opts).tasks(this._tasks.concat([task])).opensDoc(this._opensDoc || opensDoc);
-      b.data = _.clone(this.data);
-      return b;
+      return new bulk(this._src, this._opts).tasks(this._tasks.concat([task])).opensDoc(this._opensDoc || opensDoc);
     };
 
     bulk.prototype.pass = function() {
@@ -1504,8 +1500,7 @@
                     return new bulk.DocInfo({
                       doc: this._opensDoc ? open(s) : null,
                       file: s,
-                      index: index++,
-                      bulk: this
+                      index: index++
                     });
                   } catch (_error) {
                     e = _error;
@@ -1522,8 +1517,7 @@
                         return null;
                       }
                     })(),
-                    index: index++,
-                    bulk: this
+                    index: index++
                   });
               }
             }).call(_this);
@@ -1565,9 +1559,8 @@
       _ref = _.extend({
         doc: null,
         file: null,
-        index: -1,
-        bulk: null
-      }, opts), this.doc = _ref.doc, this.file = _ref.file, this.index = _ref.index, this.bulk = _ref.bulk;
+        index: -1
+      }, opts), this.doc = _ref.doc, this.file = _ref.file, this.index = _ref.index;
       this.data = {};
       if (this.file) {
         this.filename = this.file.name;
