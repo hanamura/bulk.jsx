@@ -1,7 +1,7 @@
 @bulk.fn.mode = (opts = null) ->
-	opts = _.extend
-		mode: ChangeMode.RGB
-	, opts
+  opts = _.extend
+    mode: ChangeMode.RGB
+  , opts
 
-	@push ->
-		@doc.changeMode opts.mode
+  @push ->
+    @doc.changeMode opts.mode

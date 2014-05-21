@@ -1,16 +1,16 @@
 {
   "name": "bulk.jsx",
-  "version": "2.0.2",
+  "version": "2.0.4",
   "description": "ExtendScript (.jsx) library for Photoshop.",
   "license": "MIT",
   "devDependencies": {
-    "grunt": "~0.4.2",
-    "grunt-contrib-coffee": "~0.9.0",
-    "grunt-contrib-concat": "~0.3.0",
-    "grunt-contrib-watch": "~0.5.3"
+    "grunt": "^0.4.5",
+    "grunt-contrib-coffee": "^0.10.1",
+    "grunt-contrib-concat": "^0.4.0",
+    "grunt-contrib-watch": "^0.6.1"
   },
   "dependencies": {
-    "underscore": "~1.5.2",
-    "rebounds": "~0.1.0"
+    "rebounds": "^0.1.0",
+    "underscore": "^1.6.0"
   }
 }

@@ -1,3 +1,3 @@
 @bulk.fn.save = ->
-	@push ->
-		@doc.save()
+  @push ->
+    @doc.save()
