@@ -3,17 +3,17 @@ module.exports = (grunt) ->
     coffee:
       normal:
         src: [
-          'src/bulk.coffee',
-          'src/tasks/*.coffee',
+          'src/bulk.coffee'
+          'src/tasks/*.coffee'
         ]
         dest: 'bulk.jsx'
 
     concat:
       full:
         src: [
-          'node_modules/underscore/underscore.js',
-          'node_modules/rebounds/rebounds.js',
-          'bulk.jsx',
+          'node_modules/underscore/underscore.js'
+          'node_modules/rebounds/rebounds.js'
+          'bulk.jsx'
         ]
         dest: 'bulk.full.jsx'
 
@@ -25,6 +25,6 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-concat'
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.registerTask 'default', [
-    'coffee:normal',
-    'concat:full',
+    'coffee:normal'
+    'concat:full'
   ]
